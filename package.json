@@ -1,0 +1,16 @@
+{
+  "name": "@hughx/tsconfig",
+  "version": "0.0.0",
+  "description": "Provides hughx’s TypeScript configurations",
+  "main": "tsconfig.json",
+  "repository": "git@github.com:HughxDev/tsconfig.git",
+  "author": "Hugh Guiney",
+  "license": "BlueOak-1.0.0",
+  "private": false,
+  "devDependencies": {
+    "npm-minify": ">= 0.0.7"
+  },
+  "scripts": {
+    "patch": "yarn version --patch && npm-minify"
+  }
+}
