@@ -8,7 +8,19 @@
   "license": "BlueOak-1.0.0",
   "private": false,
   "devDependencies": {
-    "npm-minify": ">= 0.0.7"
+    "eslint": "latest",
+    "eslint-config-airbnb-base": "latest",
+    "eslint-config-hughx": "latest",
+    "eslint-plugin-import": "latest",
+    "npm-minify": "latest"
+  },
+  "peerDependencies": {
+    "typedoc": ">= 0.21.4"
+  },
+  "peerDependenciesMeta": {
+    "typedoc": {
+      "optional": true
+    }
   },
   "scripts": {
     "minify": "npm-minify",

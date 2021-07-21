@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 const fs = require( 'fs' ).promises;
 
+const endUserProjectPath = '../../..';
+
 const base = {
   "compileOnSave": true,
   "compilerOptions": {
@@ -24,13 +26,18 @@ const base = {
     "categorizeByGroup": true,
     "out": "docs/",
     "mode": "file",
-    "inputFiles": []
+    "inputFiles": [],
   },
   "include": [
-    "../../../.eslintrc.*",
-    "../../../**/*.json",
-    "../../../**/*.js",
-    "../../../**/*.ts"
+    `${endUserProjectPath}/.eslintrc.*`,
+    `${endUserProjectPath}/**/*.json`,
+    `${endUserProjectPath}/**/*.js`,
+    `${endUserProjectPath}/**/*.ts`,
+  ],
+  "exclude": [
+    `${endUserProjectPath}/node_modules`,
+    `${endUserProjectPath}/bower_components`,
+    `${endUserProjectPath}/jspm_packages`,
   ],
 };
 
@@ -48,26 +55,26 @@ const configs = {
     "include": base.include.concat(
       "../../../**/*.cjs",
       "../../../**/*.mjs",
-    ).sort()
+    ).sort(),
   },
-  
+
   "react": {
     "extends": "./tsconfig.json",
     "include": base.include.concat(
       "../../../**/*.jsx",
       "../../../**/*.tsx",
-    ).sort()
+    ).sort(),
   },
 
   "web-components": {
     "extends": "./tsconfig.json",
-  }
+  },
 };
 
 const configNames = Object.keys( configs );
 
 function getConfig( configName ) {
-  if ( !configs.hasOwnProperty( configName ) ) {
+  if ( !Object.prototype.hasOwnProperty.call( configs, configName ) ) {
     console.error( `Unable to find a config with that name.` );
     process.exit( 1 );
   }
@@ -78,18 +85,18 @@ function getConfig( configName ) {
 function generateConfigs() {
   const promises = [];
 
-  configNames.forEach( ( configName, index ) => {
+  configNames.forEach( ( configName ) => {
     const config = getConfig( configName );
     const filename = `./${configName}.json`;
 
     promises.push(
-      fs.writeFile( filename, JSON.stringify( config, null, 2 ) + '\n' )
-        .then( () => console.log( `📝 Wrote ${filename}\n` ) )
-    )
+      fs.writeFile( filename, `${JSON.stringify( config, null, 2 )}\n` )
+        .then( () => console.log( `📝 Wrote ${filename}\n` ) ),
+    );
   } );
 
   Promise.all( promises )
-    .catch( ( error ) => console.error( error ) )
+    .catch( ( error ) => console.error( error ) );
 }
 
 generateConfigs();
