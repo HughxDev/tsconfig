@@ -26,5 +26,6 @@ Create a `tsconfig.json` in your project root:
 You can extend from one of the following to bring in sensible defaults for different use cases:
 
 - `@hughx/tsconfig/react.json`
+- `@hughx/tsconfig/preact.json`
 - `@hughx/tsconfig/node.json`
 - `@hughx/tsconfig/web-components.json`

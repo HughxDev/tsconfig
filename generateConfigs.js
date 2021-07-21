@@ -60,10 +60,17 @@ const configs = {
 
   "react": {
     "extends": "./tsconfig.json",
+    "jsx": "react",
     "include": base.include.concat(
       "../../../**/*.jsx",
       "../../../**/*.tsx",
     ).sort(),
+  },
+
+  "preact": {
+    "extends": "./react.json",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
   },
 
   "web-components": {
