@@ -1,6 +1,6 @@
 {
   "name": "@hughx/tsconfig",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Provides hughx’s TypeScript configurations",
   "main": "tsconfig.json",
   "repository": "git@github.com:HughxDev/tsconfig.git",
