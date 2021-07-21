@@ -11,6 +11,8 @@
     "npm-minify": ">= 0.0.7"
   },
   "scripts": {
-    "patch": "yarn version --patch && npm-minify"
+    "minify": "npm-minify",
+    "generate": "node generateConfigs.js",
+    "patch": "yarn generate && yarn version --patch && yarn minify"
   }
 }
