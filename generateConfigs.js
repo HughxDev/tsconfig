@@ -89,6 +89,20 @@ const configs = {
   },
 };
 
+/*
+  Provide `compiled/` alternatives for when `dist/`
+  is already written to by another process.
+*/
+Object.keys( configs ).forEach( ( key ) => {
+  configs[`${key}--dist-unavailable`] = {
+    "extends": `./${key}.json`,
+    "compilerOptions": {
+      ...configs[key].compilerOptions,
+      "outDir": `${endUserProjectPath}/compiled`,
+    },
+  };
+} );
+
 const configNames = Object.keys( configs );
 
 function getConfig( configName ) {
