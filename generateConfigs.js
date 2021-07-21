@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 const fs = require( 'fs' ).promises;
 
+function has( object, property ) {
+  return Object.prototype.hasOwnProperty.call( object, property );
+}
+
 const endUserProjectPath = '../../..';
 
 const base = {
   "compileOnSave": true,
   "compilerOptions": {
     "module": "ES2020",
-    "outDir": "dist",
+    "moduleResolution": "node",
+    "outDir": `${endUserProjectPath}/dist`,
     "noImplicitAny": true,
     "noUnusedParameters": true,
     "removeComments": true,
@@ -55,22 +60,28 @@ const configs = {
     "include": base.include.concat(
       "../../../**/*.cjs",
       "../../../**/*.mjs",
-    ).sort(),
+    ),
   },
 
   "react": {
     "extends": "./tsconfig.json",
-    "jsx": "react",
+    "compilerOptions": {
+      ...base.compilerOptions,
+      "jsx": "react",
+    },
     "include": base.include.concat(
       "../../../**/*.jsx",
       "../../../**/*.tsx",
-    ).sort(),
+    ),
   },
 
   "preact": {
     "extends": "./react.json",
-    "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment",
+    "compilerOptions": {
+      ...base.compilerOptions,
+      "jsxFactory": "h",
+      "jsxFragmentFactory": "Fragment",
+    },
   },
 
   "web-components": {
@@ -81,7 +92,7 @@ const configs = {
 const configNames = Object.keys( configs );
 
 function getConfig( configName ) {
-  if ( !Object.prototype.hasOwnProperty.call( configs, configName ) ) {
+  if ( !has( configs, configName ) ) {
     console.error( `Unable to find a config with that name.` );
     process.exit( 1 );
   }
@@ -94,10 +105,50 @@ function generateConfigs() {
 
   configNames.forEach( ( configName ) => {
     const config = getConfig( configName );
+    const sortedConfig = {};
     const filename = `./${configName}.json`;
+    const sortedKeys = Object.keys( config ).sort( ( a, b ) => {
+      // Float "extends" property to the top
+      if ( a === 'extends' ) {
+        return -1;
+      }
+      if ( b === 'extends' ) {
+        return 1;
+      }
+
+      // Standard alphanumerical sort
+      if ( a < b ) {
+        return -1;
+      }
+      if ( a > b ) {
+        return 1;
+      }
+
+      return 0;
+    } );
+
+    sortedKeys.forEach( ( sortedKey ) => {
+      if ( typeof config[sortedKey] === 'string' ) {
+        sortedConfig[sortedKey] = config[sortedKey];
+      } else if ( Array.isArray( config[sortedKey] ) ) {
+        sortedConfig[sortedKey] = config[sortedKey].sort();
+      } else {
+        let subkeys = Object.keys( config[sortedKey] );
+
+        if ( subkeys.length ) {
+          subkeys = subkeys.sort();
+          sortedConfig[sortedKey] = {};
+          subkeys.forEach( ( sortedSubkey ) => {
+            sortedConfig[sortedKey][sortedSubkey] = config[sortedKey][sortedSubkey];
+          } );
+        } else {
+          sortedConfig[sortedKey] = config[sortedKey];
+        }
+      }
+    } );
 
     promises.push(
-      fs.writeFile( filename, `${JSON.stringify( config, null, 2 )}\n` )
+      fs.writeFile( filename, `${JSON.stringify( sortedConfig, null, 2 )}\n` )
         .then( () => console.log( `📝 Wrote ${filename}\n` ) ),
     );
   } );
