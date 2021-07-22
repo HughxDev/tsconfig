@@ -6,13 +6,13 @@ function has( object, property ) {
 }
 
 const endUserProjectPath = '../../..';
-
+const outDir = `${endUserProjectPath}/dist`;
 const base = {
   "compileOnSave": true,
   "compilerOptions": {
     "module": "ES2020",
     "moduleResolution": "node",
-    "outDir": `${endUserProjectPath}/dist`,
+    outDir,
     "noImplicitAny": true,
     "noUnusedParameters": true,
     "removeComments": true,
@@ -43,6 +43,7 @@ const base = {
     `${endUserProjectPath}/node_modules`,
     `${endUserProjectPath}/bower_components`,
     `${endUserProjectPath}/jspm_packages`,
+    `${outDir}`,
   ],
 };
 
@@ -94,13 +95,32 @@ const configs = {
   is already written to by another process.
 */
 Object.keys( configs ).forEach( ( key ) => {
-  configs[`${key}--dist-unavailable`] = {
+  const altKey = `${key}--dist-unavailable`;
+  const altOutDir = `${endUserProjectPath}/compiled`;
+
+  configs[altKey] = {
     "extends": `./${key}.json`,
     "compilerOptions": {
       ...configs[key].compilerOptions,
-      "outDir": `${endUserProjectPath}/compiled`,
+      "outDir": altOutDir,
     },
   };
+
+  if ( has( configs[key], 'exclude' ) && configs[key].exclude.length ) {
+    configs[altKey].exclude = [
+      ...configs[key].exclude,
+      altOutDir,
+    ];
+  } else if ( has( base, 'exclude' ) && base.exclude.length ) {
+    configs[altKey].exclude = [
+      ...base.exclude,
+      altOutDir,
+    ];
+  } else {
+    configs[altKey].exclude = [
+      altOutDir,
+    ];
+  }
 } );
 
 const configNames = Object.keys( configs );
