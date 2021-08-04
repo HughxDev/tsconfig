@@ -21,7 +21,7 @@ const base = {
     "target": "ES5",
     "allowJs": true,
     "inlineSourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": `${endUserProjectPath}`,
     "paths": {
       "~/*": ["src/*"],
       "__mocks__/*": ["__mocks__/*"],
