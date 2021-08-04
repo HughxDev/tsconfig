@@ -21,6 +21,11 @@ const base = {
     "target": "ES5",
     "allowJs": true,
     "inlineSourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"],
+      "__mocks__/*": ["__mocks__/*"],
+    },
   },
   "typedocOptions": {
     "excludePrivate": true,
