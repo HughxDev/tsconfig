@@ -12,6 +12,7 @@ const base = {
   "compilerOptions": {
     "module": "ES2020",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     outDir,
     "noImplicitAny": true,
     "noUnusedParameters": true,
@@ -60,7 +61,6 @@ const configs = {
     "compilerOptions": {
       ...base.compilerOptions,
       "module": "CommonJS",
-      "resolveJsonModule": true,
       "declaration": true,
     },
     "include": base.include.concat(
