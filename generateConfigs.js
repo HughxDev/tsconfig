@@ -40,7 +40,7 @@ const base = {
     "inputFiles": [],
   },
   "include": [
-    `${endUserProjectPath}/.eslintrc.*`,
+    `${endUserProjectPath}/**/.eslintrc.*`,
     `${endUserProjectPath}/**/*.json`,
     `${endUserProjectPath}/**/*.js`,
     `${endUserProjectPath}/**/*.ts`,
