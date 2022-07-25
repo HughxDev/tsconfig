@@ -23,10 +23,12 @@ const base = {
     "allowJs": true,
     "inlineSourceMap": true,
     "baseUrl": `${endUserProjectPath}`,
-    "paths": {
-      "~/*": ["src/*"],
-      "__mocks__/*": ["__mocks__/*"],
-    },
+    "strict": true,
+    // To be specified per-project:
+    // "paths": {
+    //   "~/*": ["src/*"],
+    //   "__mocks__/*": ["__mocks__/*"],
+    // },
   },
   "typedocOptions": {
     "excludePrivate": true,

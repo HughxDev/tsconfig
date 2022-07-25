@@ -25,6 +25,8 @@
   "scripts": {
     "minify": "npm-minify",
     "generate": "node generateConfigs.js",
-    "patch": "yarn generate && yarn version --patch && yarn minify"
+    "patch": "yarn generate && yarn version --patch && yarn minify",
+    "minor": "yarn generate && yarn version --minor && yarn minify",
+    "major": "yarn generate && yarn version --major && yarn minify"
   }
 }
